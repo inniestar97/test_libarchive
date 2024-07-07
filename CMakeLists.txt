@@ -1,18 +1,18 @@
-cmake_minimum_required(VERSION 3.0.0...3.5.0)
+cmake_minimum_required(VERSION 3.0.0...${CMAKE_VERSION})
 project(microtar VERSION 0.1.0 LANGUAGES C CXX)
-
-find_package(PkgConfig REQUIRED)
-pkg_check_modules (archive REQUIRED IMPORTED_TARGET libarchive)
 
 add_executable(microtar
     main.cpp
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${archive_INCLUDE_DIRS}
+target_include_directories(${PROJECT_NAME} PUBLIC
+    $ENV{HOMEBREW_PREFIX}/opt/libarchive/include
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    PkgConfig::archive
+target_link_libraries(${PROJECT_NAME} PUBLIC
+    $ENV{HOMEBREW_PREFIX}/opt/libarchive/lib/libarchive.dylib
 )
 
+target_compile_features(${PROJECT_NAME} PUBLIC
+    cxx_std_17
+)
